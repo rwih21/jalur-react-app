@@ -32,11 +32,15 @@ export default function LoginPage({ onSwitch }) {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
-            <div className="rounded-xl bg-red-50 p-3 text-sm text-red-600">{error}</div>
+            <div className="rounded-xl bg-red-50 p-3 text-sm text-red-600">
+              {error}
+            </div>
           )}
 
           <div>
-            <label className="mb-1 block text-sm font-semibold text-slate-700">Email</label>
+            <label className="mb-1 block text-sm font-semibold text-slate-700">
+              Email
+            </label>
             <input
               type="email"
               value={email}
@@ -48,7 +52,9 @@ export default function LoginPage({ onSwitch }) {
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-semibold text-slate-700">Password</label>
+            <label className="mb-1 block text-sm font-semibold text-slate-700">
+              Password
+            </label>
             <input
               type="password"
               value={password}
@@ -66,7 +72,10 @@ export default function LoginPage({ onSwitch }) {
 
         <p className="mt-6 text-center text-sm text-slate-500">
           Don't have an account?{" "}
-          <button onClick={onSwitch} className="font-semibold text-violet-600 hover:underline">
+          <button
+            onClick={onSwitch}
+            className="font-semibold text-violet-600 hover:underline"
+          >
             Register
           </button>
         </p>

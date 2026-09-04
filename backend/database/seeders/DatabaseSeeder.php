@@ -29,5 +29,13 @@ class DatabaseSeeder extends Seeder
             'career_score' => 78,
             'interview_score' => 84,
         ]);
+        User::factory()->create([
+            'name' => 'Robby',
+            'email' => 'robby@example.com',
+            'university' => 'BINUS University',
+            'field_of_study' => 'Computer Science',
+            'career_score' => 76,
+            'interview_score' => 67,
+        ]);
     }
 }

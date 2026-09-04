@@ -31,7 +31,8 @@ export default function RegisterPage({ onSwitch }) {
     }
   };
 
-  const field = "w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100";
+  const field =
+    "w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100";
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
@@ -43,37 +44,89 @@ export default function RegisterPage({ onSwitch }) {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
-            <div className="rounded-xl bg-red-50 p-3 text-sm text-red-600">{error}</div>
+            <div className="rounded-xl bg-red-50 p-3 text-sm text-red-600">
+              {error}
+            </div>
           )}
 
           <div>
-            <label className="mb-1 block text-sm font-semibold text-slate-700">Full Name</label>
-            <input type="text" value={form.name} onChange={update("name")} required className={field} />
+            <label className="mb-1 block text-sm font-semibold text-slate-700">
+              Full Name
+            </label>
+            <input
+              type="text"
+              value={form.name}
+              onChange={update("name")}
+              required
+              className={field}
+            />
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-semibold text-slate-700">Email</label>
-            <input type="email" value={form.email} onChange={update("email")} required className={field} />
+            <label className="mb-1 block text-sm font-semibold text-slate-700">
+              Email
+            </label>
+            <input
+              type="email"
+              value={form.email}
+              onChange={update("email")}
+              required
+              className={field}
+            />
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-semibold text-slate-700">University</label>
-            <input type="text" value={form.university} onChange={update("university")} className={field} placeholder="Universitas Airlangga" />
+            <label className="mb-1 block text-sm font-semibold text-slate-700">
+              University
+            </label>
+            <input
+              type="text"
+              value={form.university}
+              onChange={update("university")}
+              className={field}
+              placeholder="Input your university..."
+            />
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-semibold text-slate-700">Field of Study</label>
-            <input type="text" value={form.field_of_study} onChange={update("field_of_study")} className={field} placeholder="Finance" />
+            <label className="mb-1 block text-sm font-semibold text-slate-700">
+              Field of Study
+            </label>
+            <input
+              type="text"
+              value={form.field_of_study}
+              onChange={update("field_of_study")}
+              className={field}
+              placeholder="Input your field of study"
+            />
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-semibold text-slate-700">Password</label>
-            <input type="password" value={form.password} onChange={update("password")} required className={field} placeholder="••••••••" />
+            <label className="mb-1 block text-sm font-semibold text-slate-700">
+              Password
+            </label>
+            <input
+              type="password"
+              value={form.password}
+              onChange={update("password")}
+              required
+              className={field}
+              placeholder="••••••••"
+            />
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-semibold text-slate-700">Confirm Password</label>
-            <input type="password" value={form.password_confirmation} onChange={update("password_confirmation")} required className={field} placeholder="••••••••" />
+            <label className="mb-1 block text-sm font-semibold text-slate-700">
+              Confirm Password
+            </label>
+            <input
+              type="password"
+              value={form.password_confirmation}
+              onChange={update("password_confirmation")}
+              required
+              className={field}
+              placeholder="••••••••"
+            />
           </div>
 
           <Button type="submit" className="w-full" disabled={submitting}>
@@ -83,7 +136,10 @@ export default function RegisterPage({ onSwitch }) {
 
         <p className="mt-6 text-center text-sm text-slate-500">
           Already have an account?{" "}
-          <button onClick={onSwitch} className="font-semibold text-violet-600 hover:underline">
+          <button
+            onClick={onSwitch}
+            className="font-semibold text-violet-600 hover:underline"
+          >
             Sign in
           </button>
         </p>
