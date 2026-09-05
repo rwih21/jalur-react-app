@@ -1,7 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Video, Users } from "lucide-react";
+import { Video, Users, ArrowRight, TrendingUp, Target } from "lucide-react";
 import api from "../services/api";
-import { Header, Card, Progress, Button } from "../components/ui";
+import {
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Progress,
+} from "../components/ui";
+
 export default function DashboardPage({ go }) {
   const [data, setData] = useState(null);
   const [firstName, setFirstName] = useState("");
@@ -14,41 +24,112 @@ export default function DashboardPage({ go }) {
   if (!data) return null;
   return (
     <>
-      <Header
-        title={`Good morning, ${firstName} 👋`}
-        sub="Ini posisi kamu sekarang dalam perjalanan kariermu."
-      />
-      <div className="grid gap-5 lg:grid-cols-2">
-        <Card className="p-6">
-          <p className="text-xs font-black text-slate-400">CAREER READINESS</p>
-          <div className="text-5xl font-black">{data.career_readiness} / 100</div>
-          <Progress value={data.career_readiness} />
-        </Card>
-        <Card className="bg-slate-950 p-6 text-white">
-          <Video className="text-violet-400" />
-          <p className="mt-6 text-xs font-black text-violet-400">
-            INTERVIEW READINESS
+      <header className="mb-7 flex flex-col justify-between gap-4 sm:flex-row">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
+            Good morning, {firstName} 👋
+          </h1>
+          <p className="mt-1 text-muted-foreground">
+            Ini posisi kamu sekarang dalam perjalanan kariermu.
           </p>
-          <div className="text-4xl font-black">{data.interview_readiness} / 100</div>
-          <p className="text-sm text-slate-400">Weakest area: Behavioral</p>
-          <Button onClick={() => go("interview")} className="mt-5">
-            Practice Interview
-          </Button>
+        </div>
+      </header>
+      <div className="grid gap-5 lg:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Career Readiness
+            </CardTitle>
+            <CardDescription className="text-4xl font-semibold text-foreground">
+              {data.career_readiness}
+              <span className="ml-1 text-base font-normal text-muted-foreground">
+                / 100
+              </span>
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="mt-auto flex flex-col gap-4">
+            <Progress value={data.career_readiness} />
+            <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
+              <TrendingUp className="size-4 text-primary" />
+              {data.career_readiness >= 70
+                ? "Great momentum — keep it up!"
+                : data.career_readiness >= 40
+                  ? "Solid progress — keep building."
+                  : "Let's get you moving forward."}
+            </p>
+          </CardContent>
         </Card>
+
+        <Card className="border-slate-800 bg-slate-950 text-slate-50">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-violet-400">
+              <Video className="size-4" />
+              Interview Readiness
+            </CardTitle>
+            <CardDescription className="text-4xl font-semibold text-slate-50">
+              {data.interview_readiness}
+              <span className="ml-1 text-base font-normal text-slate-400">
+                / 100
+              </span>
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="mt-auto flex flex-col gap-4">
+            <Badge
+              variant="secondary"
+              className="w-fit bg-slate-900 text-slate-300 hover:bg-slate-900"
+            >
+              Weakest area: Behavioral
+            </Badge>
+            <Button
+              onClick={() => go("interview")}
+              className="w-fit bg-violet-600 text-white hover:bg-violet-700"
+            >
+              Practice Interview
+              <ArrowRight className="size-4" />
+            </Button>
+          </CardContent>
+        </Card>
+
         {data.top_career && (
-          <Card className="p-6">
-            <h2 className="text-xl font-black">{data.top_career.name}</h2>
-            <p className="font-black text-violet-600">{data.top_career.match}% Career Fit</p>
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                <Target className="size-4" />
+                Top Career
+              </CardTitle>
+              <CardDescription className="pt-1 text-xl font-semibold text-foreground">
+                {data.top_career.name}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="mt-auto flex flex-col gap-4">
+              <Progress value={data.top_career.match} className="bg-violet-100" />
+              <p className="text-sm font-semibold text-primary">
+                {data.top_career.match}% Career Fit
+              </p>
+            </CardContent>
           </Card>
         )}
-        <Card className="p-6">
-          <Users />
-          <h2 className="mt-4 text-xl font-black">
-            {data.network_count} people in your network this week
-          </h2>
-          <Button onClick={() => go("network")} secondary className="mt-4">
-            View Network
-          </Button>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <Users className="size-4" />
+              Network
+            </CardTitle>
+            <CardDescription className="pt-1 text-xl font-semibold text-foreground">
+              {data.network_count} people in your network this week
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="mt-auto">
+            <Button
+              variant="outline"
+              onClick={() => go("network")}
+              className="text-foreground"
+            >
+              View Network
+              <ArrowRight className="size-4" />
+            </Button>
+          </CardContent>
         </Card>
       </div>
     </>

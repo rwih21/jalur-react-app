@@ -1,6 +1,19 @@
 import React, { useState } from "react";
+import { Compass } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
-import { Card, Button } from "../components/ui";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Input,
+  Label,
+} from "../components/ui";
 
 export default function RegisterPage({ onSwitch }) {
   const { register } = useAuth();
@@ -31,119 +44,112 @@ export default function RegisterPage({ onSwitch }) {
     }
   };
 
-  const field =
-    "w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100";
-
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
-      <Card className="w-full max-w-md p-8">
-        <div className="mb-8 text-center">
-          <div className="text-3xl font-black text-violet-600">JALUR</div>
-          <p className="mt-2 text-slate-500">Create your account</p>
+    <div className="flex min-h-svh items-center justify-center bg-muted/40 px-4 py-8">
+      <div className="w-full max-w-md">
+        <div className="mb-6 text-center">
+          <div className="mx-auto inline-flex size-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg">
+            <Compass className="size-7" />
+          </div>
+          <h1 className="mt-4 text-2xl font-bold tracking-tight text-primary">
+            JALUR
+          </h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Create your account
+          </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {error && (
-            <div className="rounded-xl bg-red-50 p-3 text-sm text-red-600">
-              {error}
-            </div>
-          )}
-
-          <div>
-            <label className="mb-1 block text-sm font-semibold text-slate-700">
-              Full Name
-            </label>
-            <input
-              type="text"
-              value={form.name}
-              onChange={update("name")}
-              required
-              className={field}
-            />
-          </div>
-
-          <div>
-            <label className="mb-1 block text-sm font-semibold text-slate-700">
-              Email
-            </label>
-            <input
-              type="email"
-              value={form.email}
-              onChange={update("email")}
-              required
-              className={field}
-            />
-          </div>
-
-          <div>
-            <label className="mb-1 block text-sm font-semibold text-slate-700">
-              University
-            </label>
-            <input
-              type="text"
-              value={form.university}
-              onChange={update("university")}
-              className={field}
-              placeholder="Input your university..."
-            />
-          </div>
-
-          <div>
-            <label className="mb-1 block text-sm font-semibold text-slate-700">
-              Field of Study
-            </label>
-            <input
-              type="text"
-              value={form.field_of_study}
-              onChange={update("field_of_study")}
-              className={field}
-              placeholder="Input your field of study"
-            />
-          </div>
-
-          <div>
-            <label className="mb-1 block text-sm font-semibold text-slate-700">
-              Password
-            </label>
-            <input
-              type="password"
-              value={form.password}
-              onChange={update("password")}
-              required
-              className={field}
-              placeholder="••••••••"
-            />
-          </div>
-
-          <div>
-            <label className="mb-1 block text-sm font-semibold text-slate-700">
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              value={form.password_confirmation}
-              onChange={update("password_confirmation")}
-              required
-              className={field}
-              placeholder="••••••••"
-            />
-          </div>
-
-          <Button type="submit" className="w-full" disabled={submitting}>
-            {submitting ? "Creating account..." : "Create Account"}
-          </Button>
-        </form>
-
-        <p className="mt-6 text-center text-sm text-slate-500">
-          Already have an account?{" "}
-          <button
-            onClick={onSwitch}
-            className="font-semibold text-violet-600 hover:underline"
-          >
-            Sign in
-          </button>
-        </p>
-      </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Get started</CardTitle>
+            <CardDescription>
+              Tell us a bit about yourself.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {error && (
+                <Alert variant="destructive">
+                  <AlertTitle>Unable to register</AlertTitle>
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              )}
+              <div className="grid gap-2">
+                <Label htmlFor="name">Full Name</Label>
+                <Input
+                  id="name"
+                  type="text"
+                  value={form.name}
+                  onChange={update("name")}
+                  required
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={form.email}
+                  onChange={update("email")}
+                  placeholder="you@example.com"
+                  required
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="university">University</Label>
+                <Input
+                  id="university"
+                  type="text"
+                  value={form.university}
+                  onChange={update("university")}
+                  placeholder="Input your university..."
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="field_of_study">Field of Study</Label>
+                <Input
+                  id="field_of_study"
+                  type="text"
+                  value={form.field_of_study}
+                  onChange={update("field_of_study")}
+                  placeholder="Input your field of study"
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={form.password}
+                  onChange={update("password")}
+                  placeholder="••••••••"
+                  required
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="password_confirmation">Confirm Password</Label>
+                <Input
+                  id="password_confirmation"
+                  type="password"
+                  value={form.password_confirmation}
+                  onChange={update("password_confirmation")}
+                  placeholder="••••••••"
+                  required
+                />
+              </div>
+              <Button type="submit" className="w-full" disabled={submitting}>
+                {submitting ? "Creating account..." : "Create Account"}
+              </Button>
+            </form>
+            <p className="mt-6 text-center text-sm text-muted-foreground">
+              Already have an account?{" "}
+              <Button variant="link" onClick={onSwitch} className="px-1 text-sm">
+                Sign in
+              </Button>
+            </p>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
