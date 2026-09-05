@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import { cn } from "@/lib/utils";
 import {
@@ -9,7 +10,8 @@ import {
   Header,
 } from "../components/ui";
 
-export default function RoadmapPage({ go }) {
+export default function RoadmapPage() {
+  const navigate = useNavigate();
   const [items, setItems] = useState([]);
   useEffect(() => {
     api.get("/roadmap").then(setItems);
@@ -48,7 +50,7 @@ export default function RoadmapPage({ go }) {
                 </span>
               </label>
               {x.title.includes("network") && (
-                <Button size="sm" onClick={() => go("network")}>
+                <Button size="sm" onClick={() => navigate("/app/network")}>
                   View People
                 </Button>
               )}

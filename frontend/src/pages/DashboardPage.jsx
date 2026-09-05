@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Video, Users, ArrowRight, TrendingUp, Target } from "lucide-react";
 import api from "../services/api";
 import {
@@ -12,7 +13,8 @@ import {
   Progress,
 } from "../components/ui";
 
-export default function DashboardPage({ go }) {
+export default function DashboardPage() {
+  const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [firstName, setFirstName] = useState("");
   useEffect(() => {
@@ -81,7 +83,7 @@ export default function DashboardPage({ go }) {
               Weakest area: Behavioral
             </Badge>
             <Button
-              onClick={() => go("interview")}
+              onClick={() => navigate("/app/interview")}
               className="w-fit bg-violet-600 text-white hover:bg-violet-700"
             >
               Practice Interview
@@ -123,7 +125,7 @@ export default function DashboardPage({ go }) {
           <CardContent className="mt-auto">
             <Button
               variant="outline"
-              onClick={() => go("network")}
+              onClick={() => navigate("/app/network")}
               className="text-foreground"
             >
               View Network

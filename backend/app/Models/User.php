@@ -6,12 +6,13 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-#[Fillable(['name', 'email', 'password', 'university', 'field_of_study'])]
+#[Fillable(['name', 'email', 'password', 'university', 'field_of_study', 'career_dna_id'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -33,5 +34,10 @@ class User extends Authenticatable
     public function interviewSessions(): HasMany
     {
         return $this->hasMany(InterviewSession::class);
+    }
+
+    public function careerDna(): BelongsTo
+    {
+        return $this->belongsTo(CareerDNA::class, 'career_dna_id');
     }
 }

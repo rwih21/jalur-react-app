@@ -1,4 +1,5 @@
 import React from "react";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
   Home,
   Sparkles,
@@ -33,20 +34,31 @@ import {
 } from "../ui";
 
 const nav = [
-  { id: "home", label: "Home", icon: Home },
-  { id: "dna", label: "Career DNA", icon: Sparkles },
-  { id: "careers", label: "Find Your Jalur", icon: Compass },
-  { id: "roadmap", label: "Roadmap", icon: Target },
-  { id: "jobs", label: "Opportunities", icon: Briefcase },
-  { id: "network", label: "JALUR Network", icon: Users },
-  { id: "copilot", label: "Career Copilot", icon: Send },
-  { id: "interview", label: "AI Video Interview", icon: Video },
-  { id: "profile", label: "Profile", icon: CircleUser },
+  { id: "", label: "Home", path: "/app", icon: Home },
+  { id: "dna", label: "Career DNA", path: "/app/dna", icon: Sparkles, end: true },
+  { id: "careers", label: "Find Your Jalur", path: "/app/careers", icon: Compass },
+  { id: "roadmap", label: "Roadmap", path: "/app/roadmap", icon: Target },
+  { id: "jobs", label: "Opportunities", path: "/app/jobs", icon: Briefcase },
+  { id: "network", label: "JALUR Network", path: "/app/network", icon: Users },
+  { id: "copilot", label: "Career Copilot", path: "/app/copilot", icon: Send },
+  { id: "interview", label: "AI Video Interview", path: "/app/interview", icon: Video },
+  { id: "profile", label: "Profile", path: "/app/profile", icon: CircleUser },
 ];
 
-export default function AppShell({ page, setPage, children }) {
+export default function AppShell() {
   const { user, logout } = useAuth();
-  const current = nav.find((x) => x.id === page);
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  const isActive = (item) =>
+    item.path === "/app" ? pathname === "/app" : pathname.startsWith(item.path);
+
+  const current = nav.find((x) => isActive(x));
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login", { replace: true });
+  };
 
   return (
     <SidebarProvider>
@@ -55,6 +67,7 @@ export default function AppShell({ page, setPage, children }) {
           <SidebarMenuButton
             size="lg"
             className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+            onClick={() => navigate("/app")}
           >
             <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
               <Compass className="size-4" />
@@ -72,11 +85,11 @@ export default function AppShell({ page, setPage, children }) {
             <SidebarGroupContent>
               <SidebarMenu>
                 {nav.map((item) => (
-                  <SidebarMenuItem key={item.id}>
+                  <SidebarMenuItem key={item.path}>
                     <SidebarMenuButton
-                      isActive={page === item.id}
+                      isActive={isActive(item)}
                       tooltip={item.label}
-                      onClick={() => setPage(item.id)}
+                      onClick={() => navigate(item.path)}
                     >
                       <item.icon />
                       <span>{item.label}</span>
@@ -93,7 +106,7 @@ export default function AppShell({ page, setPage, children }) {
             <SidebarMenuItem>
               <SidebarMenuButton
                 size="lg"
-                onClick={() => setPage("profile")}
+                onClick={() => navigate("/app/profile")}
                 tooltip={user?.name}
               >
                 <Avatar className="size-6 shrink-0">
@@ -110,7 +123,7 @@ export default function AppShell({ page, setPage, children }) {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton tooltip="Log out" onClick={logout}>
+              <SidebarMenuButton tooltip="Log out" onClick={handleLogout}>
                 <LogOut />
                 <span>Log out</span>
               </SidebarMenuButton>
@@ -127,13 +140,15 @@ export default function AppShell({ page, setPage, children }) {
             className="mr-2 data-[orientation=vertical]:h-4"
           />
           <nav className="text-sm font-medium">
-            {current && <span className="text-muted-foreground">JALUR</span>}
+            <span className="text-muted-foreground">JALUR</span>
             <span className="text-muted-foreground"> / </span>
             <span>{current?.label || "Home"}</span>
           </nav>
         </header>
         <main className="flex-1 px-4 py-6 md:px-8 md:py-8">
-          <div className="mx-auto max-w-7xl">{children}</div>
+          <div className="mx-auto max-w-7xl">
+            <Outlet />
+          </div>
         </main>
       </SidebarInset>
     </SidebarProvider>

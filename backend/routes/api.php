@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AssessmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\DashboardController;
@@ -11,6 +12,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+
+Route::get('/assessment/questions', [AssessmentController::class, 'questions']);
+Route::post('/assessment/score', [AssessmentController::class, 'score']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);

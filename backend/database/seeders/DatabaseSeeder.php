@@ -17,8 +17,11 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             CareerSeeder::class,
+            CareerDNASeeder::class,
+            CareerDNAMatchSeeder::class,
             ProfessionalSeeder::class,
             QuestionSeeder::class,
+            AssessmentQuestionSeeder::class,
         ]);
 
         User::factory()->create([

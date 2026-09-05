@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Compass } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import {
@@ -15,8 +16,10 @@ import {
   Label,
 } from "../components/ui";
 
-export default function LoginPage({ onSwitch }) {
+export default function LoginPage() {
   const { login } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -28,6 +31,8 @@ export default function LoginPage({ onSwitch }) {
     setSubmitting(true);
     try {
       await login(email, password);
+      const returnTo = location.state?.returnTo || "/app";
+      navigate(returnTo, { replace: true });
     } catch (err) {
       setError(err.errors?.email?.[0] || err.message || "Login failed");
     } finally {
@@ -93,7 +98,11 @@ export default function LoginPage({ onSwitch }) {
             </form>
             <p className="mt-6 text-center text-sm text-muted-foreground">
               Don't have an account?{" "}
-              <Button variant="link" onClick={onSwitch} className="px-1 text-sm">
+              <Button
+                variant="link"
+                className="px-1 text-sm"
+                onClick={() => navigate("/register", { state: location.state })}
+              >
                 Register
               </Button>
             </p>

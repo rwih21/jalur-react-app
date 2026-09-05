@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import {
   Badge,
@@ -11,7 +12,8 @@ import {
   Header,
 } from "../components/ui";
 
-export default function OpportunitiesPage({ go }) {
+export default function OpportunitiesPage() {
+  const navigate = useNavigate();
   const [careers, setCareers] = useState([]);
   useEffect(() => {
     api.get("/careers").then(setCareers);
@@ -33,7 +35,7 @@ export default function OpportunitiesPage({ go }) {
             </CardHeader>
             <CardContent className="flex flex-col items-start gap-4">
               <Badge variant="outline">{c.skills}</Badge>
-              <Button variant="outline" onClick={() => go("interview")}>
+              <Button variant="outline" onClick={() => navigate("/app/interview")}>
                 Practice Job Interview
               </Button>
             </CardContent>

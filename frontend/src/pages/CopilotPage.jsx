@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { Button, Card, CardContent, Header } from "../components/ui";
 
-export default function CopilotPage({ go }) {
+export default function CopilotPage() {
+  const navigate = useNavigate();
   const [s, setS] = useState(false);
   return (
     <>
@@ -26,7 +28,7 @@ export default function CopilotPage({ go }) {
             <div className="rounded-lg border border-primary/20 bg-primary/5 px-4 py-3 text-sm">
               You often skip the Result portion of STAR answers.
               <br />
-              <Button onClick={() => go("interview")} className="mt-3">
+              <Button onClick={() => navigate("/app/interview")} className="mt-3">
                 Start Practice
                 <ArrowRight className="size-4" />
               </Button>
