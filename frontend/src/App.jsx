@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Loader2 } from "lucide-react";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import AppShell from "./components/layout/AppShell";
 import LoginPage from "./pages/LoginPage";
@@ -20,8 +21,11 @@ function AppContent() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50">
-        <div className="text-lg font-semibold text-slate-400">Loading...</div>
+      <div className="flex min-h-svh items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-3 text-muted-foreground">
+          <Loader2 className="size-6 animate-spin text-primary" />
+          <span className="text-sm font-medium">Loading...</span>
+        </div>
       </div>
     );
   }

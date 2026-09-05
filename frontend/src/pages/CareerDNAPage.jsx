@@ -1,6 +1,14 @@
 import React from "react";
 import { useAuth } from "../context/AuthContext";
-import { Header, Card, Progress } from "../components/ui";
+import {
+  Header,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Progress,
+} from "../components/ui";
+
 export default function CareerDNAPage() {
   const { user } = useAuth();
   return (
@@ -9,22 +17,30 @@ export default function CareerDNAPage() {
         title="Your Career DNA"
         sub="Begini cara JALUR memahami dirimu."
       />
-      <Card className="p-7">
-        <h2 className="text-3xl font-black">Analytical Strategist</h2>
-        {[
-          ["Analytical Thinking", 92],
-          ["Leadership", 84],
-          ["Communication", 78],
-          ["Commercial Orientation", user?.career_score || 88],
-        ].map(([x, v]) => (
-          <div key={x} className="mt-5">
-            <div className="flex justify-between text-sm">
-              <span>{x}</span>
-              <b>{v}</b>
-            </div>
-            <Progress value={v} />
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-3xl font-semibold tracking-tight">
+            Analytical Strategist
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-5">
+            {[
+              ["Analytical Thinking", 92],
+              ["Leadership", 84],
+              ["Communication", 78],
+              ["Commercial Orientation", user?.career_score || 88],
+            ].map(([x, v]) => (
+              <div key={x} className="space-y-2">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">{x}</span>
+                  <span className="font-semibold">{v}</span>
+                </div>
+                <Progress value={v} />
+              </div>
+            ))}
           </div>
-        ))}
+        </CardContent>
       </Card>
     </>
   );

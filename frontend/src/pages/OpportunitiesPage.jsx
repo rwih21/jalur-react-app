@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from "react";
 import api from "../services/api";
-import { Header, Card, Button } from "../components/ui";
+import {
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Header,
+} from "../components/ui";
+
 export default function OpportunitiesPage({ go }) {
   const [careers, setCareers] = useState([]);
   useEffect(() => {
@@ -12,18 +22,24 @@ export default function OpportunitiesPage({ go }) {
         title="Opportunities For You"
         sub={`${careers.length} matched opportunities`}
       />
-      {careers.map((c) => (
-        <Card key={c.id} className="mb-4 p-6">
-          <div className="flex justify-between">
-            <b>{c.name}</b>
-            <b className="text-violet-600">{c.match_percentage}%</b>
-          </div>
-          <p className="text-sm text-slate-500">{c.skills}</p>
-          <Button onClick={() => go("interview")} secondary className="mt-4">
-            Practice Job Interview
-          </Button>
-        </Card>
-      ))}
+      <div className="space-y-4">
+        {careers.map((c) => (
+          <Card key={c.id}>
+            <CardHeader>
+              <CardTitle>{c.name}</CardTitle>
+              <CardDescription className="text-base font-semibold text-primary">
+                {c.match_percentage}% match
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col items-start gap-4">
+              <Badge variant="outline">{c.skills}</Badge>
+              <Button variant="outline" onClick={() => go("interview")}>
+                Practice Job Interview
+              </Button>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     </>
   );
 }

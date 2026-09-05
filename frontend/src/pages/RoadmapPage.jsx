@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import api from "../services/api";
-import { Header, Card, Button } from "../components/ui";
+import { cn } from "@/lib/utils";
+import {
+  Button,
+  Card,
+  CardContent,
+  Checkbox,
+  Header,
+} from "../components/ui";
+
 export default function RoadmapPage({ go }) {
   const [items, setItems] = useState([]);
   useEffect(() => {
@@ -8,7 +16,9 @@ export default function RoadmapPage({ go }) {
   }, []);
   const toggle = async (id) => {
     const target = items.find((x) => x.id === id);
-    const updated = await api.put(`/roadmap/${id}`, { completed: !target.completed });
+    const updated = await api.put(`/roadmap/${id}`, {
+      completed: !target.completed,
+    });
     setItems(items.map((x) => (x.id === id ? updated : x)));
   };
   const done = items.filter((x) => x.completed).length;
@@ -18,26 +28,34 @@ export default function RoadmapPage({ go }) {
         title="Your Roadmap"
         sub={`${done} of ${items.length} complete`}
       />
-      {items.map((x) => (
-        <Card key={x.id} className="mb-3 p-5">
-          <button
-            onClick={() => toggle(x.id)}
-            className="text-left"
-          >
-            <b>
-              {x.completed ? "✓ " : ""}
-              {x.title}
-            </b>
-            {x.title.includes("network") && (
-              <div>
-                <Button onClick={() => go("network")} className="mt-3">
+      <div className="space-y-3">
+        {items.map((x) => (
+          <Card key={x.id}>
+            <CardContent className="flex items-center justify-between gap-4 py-4">
+              <label className="flex flex-1 cursor-pointer items-start gap-3 text-left">
+                <Checkbox
+                  checked={x.completed}
+                  onCheckedChange={() => toggle(x.id)}
+                  className="mt-0.5"
+                />
+                <span
+                  className={cn(
+                    "text-sm font-medium",
+                    x.completed && "text-muted-foreground line-through",
+                  )}
+                >
+                  {x.title}
+                </span>
+              </label>
+              {x.title.includes("network") && (
+                <Button size="sm" onClick={() => go("network")}>
                   View People
                 </Button>
-              </div>
-            )}
-          </button>
-        </Card>
-      ))}
+              )}
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     </>
   );
 }

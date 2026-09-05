@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { Header, Card, Button } from "../components/ui";
+import { ArrowRight } from "lucide-react";
+import { Button, Card, CardContent, Header } from "../components/ui";
+
 export default function CopilotPage({ go }) {
   const [s, setS] = useState(false);
   return (
@@ -8,25 +10,29 @@ export default function CopilotPage({ go }) {
         title="Career Copilot"
         sub="Your Copilot understands your career and interview history."
       />
-      <Card className="p-6">
-        <div className="rounded-xl bg-slate-100 p-4">
-          Hey Jeremia 👋 What do you want to work on?
-        </div>
-        <button
-          onClick={() => setS(true)}
-          className="mt-4 rounded-xl border p-3 font-bold"
-        >
-          Why am I struggling with behavioral interviews?
-        </button>
-        {s && (
-          <div className="mt-4 rounded-xl bg-violet-50 p-4">
-            You often skip the Result portion of STAR answers.
-            <br />
-            <Button onClick={() => go("interview")} className="mt-3">
-              Start Practice
-            </Button>
+      <Card>
+        <CardContent className="space-y-4">
+          <div className="rounded-lg bg-muted px-4 py-3 text-sm">
+            Hey Jeremia 👋 What do you want to work on?
           </div>
-        )}
+          <Button
+            variant="outline"
+            className="w-full justify-start whitespace-normal h-auto min-h-9 py-2.5"
+            onClick={() => setS(true)}
+          >
+            Why am I struggling with behavioral interviews?
+          </Button>
+          {s && (
+            <div className="rounded-lg border border-primary/20 bg-primary/5 px-4 py-3 text-sm">
+              You often skip the Result portion of STAR answers.
+              <br />
+              <Button onClick={() => go("interview")} className="mt-3">
+                Start Practice
+                <ArrowRight className="size-4" />
+              </Button>
+            </div>
+          )}
+        </CardContent>
       </Card>
     </>
   );

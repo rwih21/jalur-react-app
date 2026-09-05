@@ -1,6 +1,17 @@
 import React, { useEffect, useState } from "react";
 import api from "../services/api";
-import { Header, Card, Pill, Button } from "../components/ui";
+import {
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Header,
+  Pill,
+} from "../components/ui";
+
 export default function CareerMatcherPage() {
   const [careers, setCareers] = useState([]);
   const [f, setF] = useState("All");
@@ -16,7 +27,7 @@ export default function CareerMatcherPage() {
         title="Find Your Jalur"
         sub="Eksplor career path yang sesuai dengan profilmu."
       />
-      <div className="flex gap-2">
+      <div className="flex gap-2 overflow-auto pb-1">
         {cats.map((x) => (
           <Pill key={x} active={f === x} onClick={() => setF(x)}>
             {x}
@@ -25,16 +36,20 @@ export default function CareerMatcherPage() {
       </div>
       <div className="mt-5 grid gap-4 md:grid-cols-2">
         {careers.map((c) => (
-          <Card key={c.id} className="p-5">
-            <div className="flex justify-between">
-              <b>{c.name}</b>
-              <b className="text-violet-600">{c.match_percentage}%</b>
-            </div>
-            <p className="mt-4 text-sm">{c.salary_range}</p>
-            <p className="text-sm text-slate-500">{c.skills}</p>
-            <Button secondary className="mt-4">
-              Explore Career
-            </Button>
+          <Card key={c.id}>
+            <CardHeader>
+              <CardTitle>{c.name}</CardTitle>
+              <CardDescription className="text-base font-semibold text-primary">
+                {c.match_percentage}% match
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col items-start gap-4">
+              <div className="flex flex-wrap gap-2">
+                <Badge variant="secondary">{c.salary_range}</Badge>
+                <Badge variant="outline">{c.skills}</Badge>
+              </div>
+              <Button variant="outline">Explore Career</Button>
+            </CardContent>
           </Card>
         ))}
       </div>

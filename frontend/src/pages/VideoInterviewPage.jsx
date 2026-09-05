@@ -1,8 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Camera, Mic, Square } from "lucide-react";
+import { Camera, Square } from "lucide-react";
 import api from "../services/api";
 import CameraPreview from "../components/interview/CameraPreview";
-import { Header, Card, Button, Progress, Pill } from "../components/ui";
+import {
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Header,
+  Pill,
+  Progress,
+} from "../components/ui";
+
 export default function VideoInterviewPage() {
   const [screen, setScreen] = useState("setup"),
     [mode, setMode] = useState("real"),
@@ -48,28 +59,32 @@ export default function VideoInterviewPage() {
           title="AI Video Interview"
           sub="Experience a realistic interview before the real one."
         />
-        <Card className="p-7">
-          <h2 className="text-3xl font-black">
-            Your personal HireVue simulator.
-          </h2>
-          <div className="mt-5 flex gap-2">
-            <Pill active={mode === "real"} onClick={() => setMode("real")}>
-              Real Interview
-            </Pill>
-            <Pill
-              active={mode === "practice"}
-              onClick={() => setMode("practice")}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-2xl font-semibold tracking-tight">
+              Your personal HireVue simulator.
+            </CardTitle>
+            <CardDescription>Choose a mode to begin.</CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col items-start gap-5">
+            <div className="flex gap-2">
+              <Pill active={mode === "real"} onClick={() => setMode("real")}>
+                Real Interview
+              </Pill>
+              <Pill
+                active={mode === "practice"}
+                onClick={() => setMode("practice")}
+              >
+                Coaching Mode
+              </Pill>
+            </div>
+            <Button
+              onClick={() => setScreen("devices")}
+              disabled={questions.length === 0}
             >
-              Coaching Mode
-            </Pill>
-          </div>
-          <Button
-            onClick={() => setScreen("devices")}
-            className="mt-6"
-            disabled={questions.length === 0}
-          >
-            Start Interview
-          </Button>
+              Start Interview
+            </Button>
+          </CardContent>
         </Card>
       </>
     );
@@ -81,12 +96,12 @@ export default function VideoInterviewPage() {
           sub="Camera and microphone activate only after you choose Test."
         />
         <CameraPreview stream={stream} />
-        <div className="mt-4 flex gap-2">
+        <div className="mt-4 flex flex-wrap gap-2">
           <Button onClick={enable}>
-            <Camera className="mr-2 inline" />
+            <Camera className="size-4" />
             Test Camera & Mic
           </Button>
-          <Button secondary onClick={() => setScreen("instructions")}>
+          <Button variant="outline" onClick={() => setScreen("instructions")}>
             Continue
           </Button>
         </div>
@@ -94,12 +109,18 @@ export default function VideoInterviewPage() {
     );
   if (screen === "instructions")
     return (
-      <Card className="mx-auto max-w-3xl p-7">
-        <h2 className="text-3xl font-black">Before You Begin</h2>
-        <p className="mt-4">30 seconds to prepare · 90 seconds to answer</p>
-        <Button onClick={() => setScreen("room")} className="mt-6">
-          Start Interview
-        </Button>
+      <Card className="mx-auto max-w-3xl">
+        <CardHeader>
+          <CardTitle className="text-2xl font-semibold tracking-tight">
+            Before You Begin
+          </CardTitle>
+          <CardDescription>
+            30 seconds to prepare · 90 seconds to answer
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button onClick={() => setScreen("room")}>Start Interview</Button>
+        </CardContent>
       </Card>
     );
   if (screen === "report") {
@@ -113,12 +134,14 @@ export default function VideoInterviewPage() {
           title="Your Interview Report"
           sub="Investment Banking Analyst"
         />
-        <Card className="p-7">
-          <div className="text-6xl font-black">{score} / 100</div>
-          <p className="mt-4">{feedback}</p>
-          <div className="mt-6 flex gap-2">
+        <Card>
+          <CardContent className="flex flex-col items-start gap-4 text-center sm:items-center">
+            <div className="text-6xl font-bold tracking-tight">
+              {score} <span className="text-2xl text-muted-foreground">/ 100</span>
+            </div>
+            <p className="max-w-lg text-muted-foreground">{feedback}</p>
             <Button
-              secondary
+              variant="outline"
               onClick={() => {
                 setScreen("setup");
                 setIdx(0);
@@ -129,7 +152,7 @@ export default function VideoInterviewPage() {
             >
               Restart Interview
             </Button>
-          </div>
+          </CardContent>
         </Card>
       </>
     );
@@ -161,35 +184,37 @@ export default function VideoInterviewPage() {
         sub={questions[idx].type}
       />
       <Progress value={((idx + 1) / questions.length) * 100} />
-      <Card className="mt-5 p-6">
-        <h2 className="text-center text-2xl font-black">
-          “{questions[idx].question_text}”
-        </h2>
-        <div className="mt-5 grid gap-5 lg:grid-cols-[1.3fr_.7fr]">
-          <CameraPreview stream={stream} recording={phase === "recording"} />
-          <div className="rounded-xl bg-slate-50 p-6 text-center">
-            <div className="text-5xl font-black">
-              {String(Math.floor(time / 60)).padStart(2, "0")}:
-              {String(time % 60).padStart(2, "0")}
+      <Card className="mt-5">
+        <CardContent className="flex flex-col gap-5">
+          <h2 className="text-center text-xl font-semibold tracking-tight md:text-2xl">
+            “{questions[idx].question_text}”
+          </h2>
+          <div className="grid gap-5 lg:grid-cols-[1.3fr_.7fr]">
+            <CameraPreview stream={stream} recording={phase === "recording"} />
+            <div className="flex flex-col items-center justify-center rounded-lg bg-muted p-6 text-center">
+              <div className="text-5xl font-bold tracking-tight">
+                {String(Math.floor(time / 60)).padStart(2, "0")}:
+                {String(time % 60).padStart(2, "0")}
+              </div>
+              {phase === "prepare" && (
+                <Button onClick={startRec} className="mt-5">
+                  Start Answer
+                </Button>
+              )}
+              {phase === "recording" && (
+                <Button variant="destructive" onClick={finish} className="mt-5">
+                  <Square className="size-4" />
+                  Finish Answer
+                </Button>
+              )}
+              {phase === "submitted" && (
+                <Button onClick={next} className="mt-5">
+                  Next Question
+                </Button>
+              )}
             </div>
-            {phase === "prepare" && (
-              <Button onClick={startRec} className="mt-5">
-                Start Answer
-              </Button>
-            )}
-            {phase === "recording" && (
-              <Button danger onClick={finish} className="mt-5">
-                <Square className="mr-2 inline" />
-                Finish Answer
-              </Button>
-            )}
-            {phase === "submitted" && (
-              <Button onClick={next} className="mt-5">
-                Next Question
-              </Button>
-            )}
           </div>
-        </div>
+        </CardContent>
       </Card>
     </>
   );
