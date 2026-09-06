@@ -96,17 +96,20 @@ export default function LandingPage() {
 
       <main className="flex-1">
         <section className="relative overflow-hidden">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,color-mix(in_oklab,var(--color-primary)_12%,transparent),transparent_60%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,color-mix(in_oklab,var(--color-primary)_16%,transparent),transparent_60%)]" />
           <div className="relative mx-auto w-full max-w-6xl px-4 py-20 text-center md:px-8 md:py-28">
             <div className="mx-auto w-fit">
-              <span className="inline-flex items-center gap-2 rounded-full border bg-primary/5 px-3 py-1 text-xs font-medium text-primary">
+              <span className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-3 py-1 text-xs font-medium text-primary-dark">
                 <Dna className="size-3.5" />
                 Discover your career DNA
               </span>
             </div>
             <h1 className="mx-auto mt-6 max-w-3xl text-4xl font-bold tracking-tight text-balance md:text-6xl">
               Temukan jalur karier yang{" "}
-              <span className="text-primary">benar-benar cocok</span> untukmu.
+              <span className="bg-linear-to-r from-primary to-peach bg-clip-text text-transparent">
+                benar-benar cocok
+              </span>{" "}
+              untukmu.
             </h1>
             <p className="mx-auto mt-6 max-w-xl text-base text-muted-foreground md:text-lg">
               JALUR mengenali cara kamu berpikir dan bekerja lewat tes singkat,
@@ -115,6 +118,7 @@ export default function LandingPage() {
             <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Button
                 size="lg"
+                variant="brand"
                 onClick={() => navigate("/assessment")}
                 className="w-full gap-2 sm:w-auto"
               >
@@ -150,7 +154,7 @@ export default function LandingPage() {
                 <Card key={f.title}>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-base">
-                      <div className="flex size-8 items-center justify-center rounded-lg bg-primary/10">
+                      <div className="flex size-8 items-center justify-center rounded-lg bg-primary/15">
                         <f.icon className="size-4 text-primary" />
                       </div>
                       {f.title}
@@ -181,7 +185,7 @@ export default function LandingPage() {
             <div className="mt-12 grid gap-4 md:grid-cols-3">
               {steps.map((s) => (
                 <div key={s.step} className="relative rounded-xl border bg-card p-6">
-                  <span className="text-sm font-bold text-primary">{s.step}</span>
+                  <span className="text-sm font-bold text-primary-dark">{s.step}</span>
                   <h3 className="mt-3 text-lg font-semibold tracking-tight">
                     {s.title}
                   </h3>
@@ -190,7 +194,7 @@ export default function LandingPage() {
               ))}
             </div>
             <div className="mt-12 text-center">
-              <Button size="lg" onClick={() => navigate("/assessment")} className="gap-2">
+              <Button size="lg" variant="brand" onClick={() => navigate("/assessment")} className="gap-2">
                 Start my assessment
                 <ArrowRight className="size-4" />
               </Button>

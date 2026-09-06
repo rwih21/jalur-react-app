@@ -8,7 +8,7 @@ export default function CameraPreview({ stream, recording }) {
     if (ref.current && stream) ref.current.srcObject = stream;
   }, [stream]);
   return (
-    <div className="relative aspect-video overflow-hidden rounded-xl bg-slate-950">
+    <div className="relative aspect-video overflow-hidden rounded-xl bg-ink">
       <video
         ref={ref}
         autoPlay
@@ -17,7 +17,7 @@ export default function CameraPreview({ stream, recording }) {
         className="h-full w-full object-cover"
       />
       {!stream && (
-        <div className="absolute inset-0 grid place-items-center text-slate-400/80">
+        <div className="absolute inset-0 grid place-items-center text-ink/70">
           <CameraOff className="size-8" />
         </div>
       )}

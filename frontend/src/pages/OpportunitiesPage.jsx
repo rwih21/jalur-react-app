@@ -29,7 +29,7 @@ export default function OpportunitiesPage() {
           <Card key={c.id}>
             <CardHeader>
               <CardTitle>{c.name}</CardTitle>
-              <CardDescription className="text-base font-semibold text-primary">
+              <CardDescription className="text-base font-semibold text-primary-dark">
                 {c.match_percentage}% match
               </CardDescription>
             </CardHeader>

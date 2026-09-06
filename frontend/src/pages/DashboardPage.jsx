@@ -42,8 +42,10 @@ export default function DashboardPage() {
             <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               Career Readiness
             </CardTitle>
-            <CardDescription className="text-4xl font-semibold text-foreground">
-              {data.career_readiness}
+            <CardDescription className="text-4xl font-semibold">
+              <span className="bg-linear-to-r from-primary to-peach bg-clip-text text-transparent">
+                {data.career_readiness}
+              </span>
               <span className="ml-1 text-base font-normal text-muted-foreground">
                 / 100
               </span>
@@ -62,15 +64,17 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-slate-800 bg-slate-950 text-slate-50">
+        <Card className="border-white/10 bg-ink text-background">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-violet-400">
+            <CardTitle className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary">
               <Video className="size-4" />
               Interview Readiness
             </CardTitle>
-            <CardDescription className="text-4xl font-semibold text-slate-50">
-              {data.interview_readiness}
-              <span className="ml-1 text-base font-normal text-slate-400">
+            <CardDescription className="text-4xl font-semibold">
+              <span className="bg-linear-to-r from-primary to-peach bg-clip-text text-transparent">
+                {data.interview_readiness}
+              </span>
+              <span className="ml-1 text-base font-normal text-background/60">
                 / 100
               </span>
             </CardDescription>
@@ -78,13 +82,14 @@ export default function DashboardPage() {
           <CardContent className="mt-auto flex flex-col gap-4">
             <Badge
               variant="secondary"
-              className="w-fit bg-slate-900 text-slate-300 hover:bg-slate-900"
+              className="w-fit bg-white/10 text-background/90 hover:bg-white/10"
             >
               Weakest area: Behavioral
             </Badge>
             <Button
+              variant="brand"
               onClick={() => navigate("/app/interview")}
-              className="w-fit bg-violet-600 text-white hover:bg-violet-700"
+              className="w-fit"
             >
               Practice Interview
               <ArrowRight className="size-4" />
@@ -104,8 +109,8 @@ export default function DashboardPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="mt-auto flex flex-col gap-4">
-              <Progress value={data.top_career.match} className="bg-violet-100" />
-              <p className="text-sm font-semibold text-primary">
+              <Progress value={data.top_career.match} className="bg-primary/15" />
+              <p className="text-sm font-semibold text-primary-dark">
                 {data.top_career.match}% Career Fit
               </p>
             </CardContent>

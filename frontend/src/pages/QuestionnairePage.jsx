@@ -192,7 +192,7 @@ export default function QuestionnairePage() {
                     className={cn(
                       "rounded-xl border px-5 py-4 text-left text-sm transition-colors",
                       selected
-                        ? "border-primary bg-primary/5 font-medium text-primary shadow-sm"
+                        ? "border-primary bg-primary/10 font-medium text-primary-dark shadow-sm"
                         : "bg-card text-foreground hover:border-primary/40 hover:bg-accent",
                     )}
                   >

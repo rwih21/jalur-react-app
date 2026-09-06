@@ -24,7 +24,7 @@ export default function ProfilePage() {
         <CardHeader>
           <div className="flex items-center gap-4">
             <Avatar className="size-14">
-              <AvatarFallback className="bg-primary/10 text-lg font-semibold text-primary">
+              <AvatarFallback className="bg-primary/10 text-lg font-semibold text-primary-dark">
                 {user?.name
                   ?.split(" ")
                   .map((w) => w[0])

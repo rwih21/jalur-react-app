@@ -141,7 +141,7 @@ export default function ResultsPage() {
 
       <main className="mx-auto w-full max-w-5xl px-4 py-10 md:py-14">
         {unlocking && (
-          <div className="mb-6 flex items-center gap-2 rounded-lg border bg-primary/5 px-4 py-3 text-sm font-medium text-primary">
+          <div className="mb-6 flex items-center gap-2 rounded-lg border border-primary/25 bg-primary/10 px-4 py-3 text-sm font-medium text-primary-dark">
             <Loader2 className="size-4 animate-spin" />
             Unlocking your full career matches...
           </div>
@@ -149,9 +149,9 @@ export default function ResultsPage() {
 
         {dna && (
           <Card className="overflow-hidden">
-            <div className="h-2 bg-gradient-to-r from-primary via-primary/60 to-primary/20" />
+            <div className="h-3 bg-linear-to-r from-primary to-peach" />
             <CardHeader>
-              <Badge className="w-fit gap-1 border-transparent bg-primary/10 text-primary">
+              <Badge className="w-fit gap-1 border-transparent bg-primary/15 text-primary-dark">
                 <TrendingUp className="size-3.5" />
                 Career DNA Result
               </Badge>
@@ -183,12 +183,13 @@ export default function ResultsPage() {
                 <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Overall career fit
                 </span>
-                <div className="mt-1 text-5xl font-bold tracking-tight text-primary">
+                <div className="mt-1 bg-linear-to-r from-primary to-peach bg-clip-text text-5xl font-bold tracking-tight text-transparent">
                   {result.career_score}
-                  <span className="ml-1 text-lg text-muted-foreground">/ 100</span>
+                  <span className="ml-1 text-lg font-normal text-muted-foreground">/ 100</span>
                 </div>
                 {!user ? (
                   <Button
+                    variant="brand"
                     onClick={() => navigate("/login", { state: { returnTo: "/results" } })}
                     className="mt-5 w-full gap-2"
                   >
@@ -236,7 +237,7 @@ export default function ResultsPage() {
                     <CardHeader>
                       <div className="flex items-start justify-between gap-3">
                         <CardTitle className="text-lg">{c.name}</CardTitle>
-                        <Badge className="border-transparent bg-primary/10 text-primary">
+                        <Badge className="border-transparent bg-primary/15 text-primary-dark">
                           {c.match_percentage}%
                         </Badge>
                       </div>
@@ -264,11 +265,12 @@ export default function ResultsPage() {
                           Masuk untuk melihat detail karier ini.
                         </p>
                       </div>
-                      <Button
-                        size="sm"
-                        onClick={() => navigate("/login", { state: { returnTo: "/results" } })}
-                        className="gap-1.5"
-                      >
+<Button
+                      size="sm"
+                      variant="brand"
+                      onClick={() => navigate("/login", { state: { returnTo: "/results" } })}
+                      className="gap-1.5"
+                    >
                         Login to unlock
                         <Sparkles className="size-3.5" />
                       </Button>

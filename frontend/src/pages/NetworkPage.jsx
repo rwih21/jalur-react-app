@@ -46,7 +46,7 @@ export default function NetworkPage() {
             <CardHeader>
               <div className="flex items-center gap-3">
                 <Avatar className="size-10">
-                  <AvatarFallback className="bg-primary/10 font-semibold text-primary">
+                  <AvatarFallback className="bg-primary/10 font-semibold text-primary-dark">
                     {p.name
                       ?.split(" ")
                       .map((w) => w[0])
@@ -63,7 +63,7 @@ export default function NetworkPage() {
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
               <div className="flex flex-wrap gap-2">
-                <Badge className="border-transparent bg-primary/10 text-primary">
+                <Badge className="border-transparent bg-primary/15 text-primary-dark">
                   {p.match_percentage}% match
                 </Badge>
                 <Badge variant="secondary">{p.company}</Badge>

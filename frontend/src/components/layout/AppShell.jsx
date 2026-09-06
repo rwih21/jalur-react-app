@@ -110,7 +110,7 @@ export default function AppShell() {
                 tooltip={user?.name}
               >
                 <Avatar className="size-6 shrink-0">
-                  <AvatarFallback className="bg-primary/10 text-xs font-semibold text-primary">
+                  <AvatarFallback className="bg-primary/10 text-xs font-semibold text-primary-dark">
                     {user?.name
                       ?.split(" ")
                       .map((w) => w[0])

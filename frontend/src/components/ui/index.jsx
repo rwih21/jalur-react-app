@@ -92,7 +92,7 @@ export function Pill({ children, active, onClick, className }) {
       className={cn(
         "inline-flex size-auto h-9 shrink-0 items-center justify-center gap-2 rounded-full border px-4 text-sm font-medium whitespace-nowrap transition-colors",
         active
-          ? "border-primary bg-primary/10 text-primary"
+          ? "border-primary bg-primary/10 text-primary-dark"
           : "bg-background text-muted-foreground hover:bg-accent hover:text-accent-foreground",
         className,
       )}
