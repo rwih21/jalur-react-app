@@ -1,4 +1,5 @@
 const API_URL = "http://127.0.0.1:8000/api";
+const REQUEST_TIMEOUT_MS = 10000;
 
 function getToken() {
   return localStorage.getItem("jalur_token");
@@ -9,11 +10,20 @@ async function request(method, path, body = null) {
   const token = getToken();
   if (token) headers["Authorization"] = `Bearer ${token}`;
 
-  const res = await fetch(`${API_URL}${path}`, {
-    method,
-    headers,
-    body: body ? JSON.stringify(body) : undefined,
-  });
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+
+  let res;
+  try {
+    res = await fetch(`${API_URL}${path}`, {
+      method,
+      headers,
+      body: body ? JSON.stringify(body) : undefined,
+      signal: controller.signal,
+    });
+  } finally {
+    clearTimeout(timer);
+  }
 
   if (res.status === 401) {
     localStorage.removeItem("jalur_token");
