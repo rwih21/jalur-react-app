@@ -13,6 +13,7 @@ import {
 import api from "../services/api";
 import { cn } from "@/lib/utils";
 import { useAuth } from "../context/AuthContext";
+import logo from "../assets/logo/jalur-logo-dark.png";
 import {
   Badge,
   Button,
@@ -125,12 +126,12 @@ export default function ResultsPage() {
             }}
             className="flex items-center gap-2"
           >
-            <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-              <Dna className="size-4" />
+            <div className="flex size-20 items-center justify-center text-primary-foreground">
+              <img src={logo} alt="Logo" className="" />
             </div>
-            <span className="text-lg font-bold tracking-tight text-primary">
+            {/* <span className="text-lg font-bold tracking-tight text-primary">
               JALUR
-            </span>
+            </span> */}
           </a>
           <Button variant="ghost" onClick={retake}>
             <RefreshCw className="size-4" />

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Compass } from "lucide-react";
+import logo from "../assets/logo/jalur-logo-dark.png";
 import { useAuth } from "../context/AuthContext";
 import {
   Alert,
@@ -43,17 +43,14 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-svh items-center justify-center bg-muted/40 px-4 py-8">
       <div className="w-full max-w-md">
-        <div className="mb-6 text-center">
-          <div className="mx-auto inline-flex size-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg">
-            <Compass className="size-7" />
+        {/* <div className="text-center">
+          <div className="mx-auto w-fit">
+            <img src={logo} alt="Logo" className="size-40" />
           </div>
-          <h1 className="mt-4 text-2xl font-bold tracking-tight text-primary">
-            JALUR
-          </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground">
             Sign in to your account
           </p>
-        </div>
+        </div> */}
 
         <Card>
           <CardHeader>

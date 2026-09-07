@@ -19,6 +19,7 @@ import {
   CardTitle,
   Progress,
 } from "../components/ui";
+import logo from "../assets/logo/jalur-logo-dark.png";
 
 const ANSWERS_KEY = "jalur_assessment_answers";
 const RESULT_KEY = "jalur_assessment_result";
@@ -156,12 +157,9 @@ export default function QuestionnairePage() {
             }}
             className="flex items-center gap-2"
           >
-            <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-              <Sparkles className="size-4" />
+            <div className="flex size-20 items-center justify-center text-primary-foreground">
+              <img src={logo} alt="Logo" className="" />
             </div>
-            <span className="text-lg font-bold tracking-tight text-primary">
-              JALUR
-            </span>
           </a>
           <span className="text-sm font-medium text-muted-foreground">
             {progress}% completed

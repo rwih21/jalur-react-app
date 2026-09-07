@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import logo from "../assets/logo/jalur-logo-dark.png";
 import {
   ArrowRight,
   Compass,
@@ -81,12 +82,16 @@ export default function LandingPage() {
             onClick={(e) => e.preventDefault()}
             className="flex items-center gap-2"
           >
-            <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+            {/* <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
               <Compass className="size-4" />
             </div>
             <span className="text-lg font-bold tracking-tight text-primary">
               JALUR
-            </span>
+            </span> */}
+
+            <div className="flex size-20 item-center justify-center">
+              <img src={logo} alt="Logo" />
+            </div>
           </a>
           <Button variant="outline" onClick={() => navigate("/login")}>
             Sign in
@@ -145,8 +150,8 @@ export default function LandingPage() {
               </h2>
               <p className="mt-4 text-muted-foreground">
                 JALUR adalah platform perkembangan karier yang mengubah cara
-                kamu mempersiapkan masa depan — dari mengetahui kekuatanmu hingga
-                membangun langkah nyata menuju pekerjaan impian.
+                kamu mempersiapkan masa depan — dari mengetahui kekuatanmu
+                hingga membangun langkah nyata menuju pekerjaan impian.
               </p>
             </div>
             <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -184,8 +189,13 @@ export default function LandingPage() {
             </div>
             <div className="mt-12 grid gap-4 md:grid-cols-3">
               {steps.map((s) => (
-                <div key={s.step} className="relative rounded-xl border bg-card p-6">
-                  <span className="text-sm font-bold text-primary-dark">{s.step}</span>
+                <div
+                  key={s.step}
+                  className="relative rounded-xl border bg-card p-6"
+                >
+                  <span className="text-sm font-bold text-primary-dark">
+                    {s.step}
+                  </span>
                   <h3 className="mt-3 text-lg font-semibold tracking-tight">
                     {s.title}
                   </h3>
@@ -194,7 +204,12 @@ export default function LandingPage() {
               ))}
             </div>
             <div className="mt-12 text-center">
-              <Button size="lg" variant="brand" onClick={() => navigate("/assessment")} className="gap-2">
+              <Button
+                size="lg"
+                variant="brand"
+                onClick={() => navigate("/assessment")}
+                className="gap-2"
+              >
                 Start my assessment
                 <ArrowRight className="size-4" />
               </Button>
@@ -205,7 +220,7 @@ export default function LandingPage() {
 
       <footer className="border-t py-8">
         <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-3 px-4 text-sm text-muted-foreground sm:flex-row md:px-8">
-          <span className="font-bold tracking-tight text-primary">JALUR</span>
+          <img src={logo} alt="Logo" className="size-30" />
           <span>Built to help you find your way.</span>
         </div>
       </footer>

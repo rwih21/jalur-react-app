@@ -13,6 +13,7 @@ import {
   LogOut,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
+import logo from "../../assets/logo/jalur-logo-dark.png";
 import {
   Avatar,
   AvatarFallback,
@@ -35,13 +36,29 @@ import {
 
 const nav = [
   { id: "", label: "Home", path: "/app", icon: Home },
-  { id: "dna", label: "Career DNA", path: "/app/dna", icon: Sparkles, end: true },
-  { id: "careers", label: "Find Your Jalur", path: "/app/careers", icon: Compass },
+  {
+    id: "dna",
+    label: "Career DNA",
+    path: "/app/dna",
+    icon: Sparkles,
+    end: true,
+  },
+  {
+    id: "careers",
+    label: "Find Your Jalur",
+    path: "/app/careers",
+    icon: Compass,
+  },
   { id: "roadmap", label: "Roadmap", path: "/app/roadmap", icon: Target },
   { id: "jobs", label: "Opportunities", path: "/app/jobs", icon: Briefcase },
   { id: "network", label: "JALUR Network", path: "/app/network", icon: Users },
   { id: "copilot", label: "Career Copilot", path: "/app/copilot", icon: Send },
-  { id: "interview", label: "AI Video Interview", path: "/app/interview", icon: Video },
+  {
+    id: "interview",
+    label: "AI Video Interview",
+    path: "/app/interview",
+    icon: Video,
+  },
   { id: "profile", label: "Profile", path: "/app/profile", icon: CircleUser },
 ];
 
@@ -69,10 +86,14 @@ export default function AppShell() {
             className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             onClick={() => navigate("/app")}
           >
-            <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-              <Compass className="size-4" />
+            <div className="flex aspect-square size-10 items-center justify-center overflow-hidden rounded-lg bg-primary/10 transition-[width,height] duration-200 ease-linear group-data-[collapsible=icon]:size-8 group-data-[collapsible=icon]:rounded-md">
+              <img
+                src={logo}
+                alt="Logo"
+                className="h-full w-full object-cover"
+              />
             </div>
-            <div className="grid flex-1 text-left text-sm leading-tight">
+            <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
               <span className="font-bold tracking-tight">JALUR</span>
               <span className="text-sidebar-foreground/60 truncate text-xs">
                 Career Platform
