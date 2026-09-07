@@ -40,6 +40,7 @@ export default function QuestionnairePage() {
   const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState(loadAnswers);
   const [submitting, setSubmitting] = useState(false);
+  const [mode, setMode] = useState(null);
 
   const loadQuestions = () => {
     setLoading(true);
@@ -53,6 +54,16 @@ export default function QuestionnairePage() {
           answers.some((a) => a.question_id === question.id),
         );
         if (answered.length) setIndex(answered.length - 1);
+        const hasResult = (() => {
+          try {
+            return !!JSON.parse(localStorage.getItem(RESULT_KEY));
+          } catch {
+            return false;
+          }
+        })();
+        if (hasResult && answered.length === q.length) setMode("done");
+        else if (answered.length > 0) setMode("resume");
+        else setMode("quiz");
       })
       .catch(() => {
         setLoading(false);
@@ -91,6 +102,18 @@ export default function QuestionnairePage() {
     if (index > 0) setIndex(index - 1);
   };
 
+  const resume = () => setMode("quiz");
+
+  const startOver = () => {
+    localStorage.removeItem(ANSWERS_KEY);
+    localStorage.removeItem(RESULT_KEY);
+    setAnswers([]);
+    setIndex(0);
+    setMode("quiz");
+  };
+
+  const goToResults = () => navigate("/results");
+
   const goNext = () => {
     if (index < total - 1) setIndex(index + 1);
   };
@@ -104,6 +127,9 @@ export default function QuestionnairePage() {
         ),
       });
       localStorage.setItem(RESULT_KEY, JSON.stringify(result));
+      if (result.persisted) {
+        localStorage.removeItem(ANSWERS_KEY);
+      }
       navigate("/results");
     } catch {
       setSubmitting(false);
@@ -168,61 +194,111 @@ export default function QuestionnairePage() {
       </header>
 
       <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-4 py-8">
-        <div className="mb-8 flex items-center gap-4">
-          <Progress value={progress} className="flex-1" />
-          <span className="shrink-0 text-sm font-medium text-muted-foreground">
-            {index + 1} / {total}
-          </span>
-        </div>
-
-        {current && (
-          <div className="flex flex-1 flex-col">
-            <h1 className="text-2xl font-bold tracking-tight text-balance md:text-3xl">
-              {current.question_text}
-            </h1>
-            <div className="mt-8 grid gap-3">
-              {current.options.map((option, optionIndex) => {
-                const selected = currentAnswer === optionIndex;
-                return (
-                  <button
-                    key={optionIndex}
-                    onClick={() => choose(optionIndex)}
-                    className={cn(
-                      "rounded-xl border px-5 py-4 text-left text-sm transition-colors",
-                      selected
-                        ? "border-primary bg-primary/10 font-medium text-primary-dark shadow-sm"
-                        : "bg-card text-foreground hover:border-primary/40 hover:bg-accent",
-                    )}
-                  >
-                    {option}
-                  </button>
-                );
-              })}
-            </div>
+        {mode === "done" ? (
+          <div className="flex flex-1 flex-col items-center justify-center py-12">
+            <Card className="w-full max-w-md text-center">
+              <CardHeader className="items-center">
+                <div className="flex size-12 items-center justify-center rounded-xl bg-primary/10">
+                  <Sparkles className="size-6 text-primary" />
+                </div>
+                <CardTitle className="text-xl">Tes sudah kamu selesaikan</CardTitle>
+                <CardDescription>
+                  Career DNA-mu sudah tersimpan. Lihat hasil atau ulangi tes dari
+                  awal.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-2">
+                <Button variant="brand" onClick={goToResults} className="gap-2">
+                  Lihat Hasil
+                  <ArrowRight className="size-4" />
+                </Button>
+                <Button variant="outline" onClick={startOver} className="gap-2">
+                  <RefreshCw className="size-4" />
+                  Ulangi Tes
+                </Button>
+              </CardContent>
+            </Card>
           </div>
-        )}
+        ) : (
+          <>
+            {mode === "resume" && (
+              <div className="mb-6 flex flex-col gap-3 rounded-xl border border-primary/25 bg-primary/10 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-sm font-semibold text-primary-dark">
+                    Belum selesai — lanjutkan?
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Kamu sudah menjawab {answeredCount} dari {total} pertanyaan.
+                  </p>
+                </div>
+                <div className="flex gap-2">
+                  <Button size="sm" variant="brand" onClick={resume}>
+                    Lanjutkan
+                  </Button>
+                  <Button size="sm" variant="outline" onClick={startOver}>
+                    Mulai Ulang
+                  </Button>
+                </div>
+              </div>
+            )}
 
-        <div className="mt-10 flex items-center justify-between gap-3">
-          <Button variant="outline" onClick={goBack} disabled={index === 0}>
-            <ArrowLeft className="size-4" />
-            Back
-          </Button>
-          {index < total - 1 ? (
-            <Button onClick={goNext} disabled={currentAnswer === null}>
-              Next
-              <ArrowRight className="size-4" />
-            </Button>
-          ) : (
-            <Button onClick={finish} disabled={currentAnswer === null}>
-              {submitting ? (
-                <Loader2 className="size-4 animate-spin" />
+            <div className="mb-8 flex items-center gap-4">
+              <Progress value={progress} className="flex-1" />
+              <span className="shrink-0 text-sm font-medium text-muted-foreground">
+                {index + 1} / {total}
+              </span>
+            </div>
+
+            {current && (
+              <div className="flex flex-1 flex-col">
+                <h1 className="text-2xl font-bold tracking-tight text-balance md:text-3xl">
+                  {current.question_text}
+                </h1>
+                <div className="mt-8 grid gap-3">
+                  {current.options.map((option, optionIndex) => {
+                    const selected = currentAnswer === optionIndex;
+                    return (
+                      <button
+                        key={optionIndex}
+                        onClick={() => choose(optionIndex)}
+                        className={cn(
+                          "rounded-xl border px-5 py-4 text-left text-sm transition-colors",
+                          selected
+                            ? "border-primary bg-primary/10 font-medium text-primary-dark shadow-sm"
+                            : "bg-card text-foreground hover:border-primary/40 hover:bg-accent",
+                        )}
+                      >
+                        {option}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            <div className="mt-10 flex items-center justify-between gap-3">
+              <Button variant="outline" onClick={goBack} disabled={index === 0}>
+                <ArrowLeft className="size-4" />
+                Back
+              </Button>
+              {index < total - 1 ? (
+                <Button onClick={goNext} disabled={currentAnswer === null}>
+                  Next
+                  <ArrowRight className="size-4" />
+                </Button>
               ) : (
-                <Sparkles className="size-4" />
+                <Button onClick={finish} disabled={currentAnswer === null}>
+                  {submitting ? (
+                    <Loader2 className="size-4 animate-spin" />
+                  ) : (
+                    <Sparkles className="size-4" />
+                  )}
+                  See My Results
+                </Button>
               )}
-              See My Results
-            </Button>
-          )}
-        </div>
+            </div>
+          </>
+        )}
       </main>
     </div>
   );

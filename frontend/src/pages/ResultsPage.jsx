@@ -66,6 +66,7 @@ export default function ResultsPage() {
         if (!mounted) return;
         setResult(fresh);
         localStorage.setItem(RESULT_KEY, JSON.stringify(fresh));
+        localStorage.removeItem(ANSWERS_KEY);
       })
       .catch(() => {})
       .finally(() => mounted && setUnlocking(false));
