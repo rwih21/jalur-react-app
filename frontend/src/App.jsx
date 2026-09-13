@@ -10,8 +10,12 @@ import { Loader2 } from "lucide-react";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import AppShell from "./components/layout/AppShell";
 import LandingPage from "./pages/LandingPage";
+import StartPage from "./pages/StartPage";
 import QuestionnairePage from "./pages/QuestionnairePage";
 import ResultsPage from "./pages/ResultsPage";
+import CareerBrowsePage from "./pages/CareerBrowsePage";
+import CurrentStatePage from "./pages/CurrentStatePage";
+import PlanPage from "./pages/PlanPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import DashboardPage from "./pages/DashboardPage";
@@ -65,8 +69,12 @@ function AppRoutes() {
           </GuestOnly>
         }
       />
+      <Route path="/start" element={<StartPage />} />
       <Route path="/assessment" element={<QuestionnairePage />} />
+      <Route path="/assessment/current-state" element={<CurrentStatePage />} />
       <Route path="/results" element={<ResultsPage />} />
+      <Route path="/careers" element={<CareerBrowsePage />} />
+      <Route path="/plan" element={<PlanPage />} />
       <Route
         path="/login"
         element={

@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             CareerSeeder::class,
             CareerDNASeeder::class,
             CareerDNAMatchSeeder::class,
+            CareerRequirementSeeder::class,
             ProfessionalSeeder::class,
             QuestionSeeder::class,
             AssessmentQuestionSeeder::class,

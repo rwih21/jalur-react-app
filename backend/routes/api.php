@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InterviewSessionController;
+use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ProfessionalController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\RoadmapController;
@@ -15,6 +16,10 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('/assessment/questions', [AssessmentController::class, 'questions']);
 Route::post('/assessment/score', [AssessmentController::class, 'score']);
+Route::post('/assessment/current-state', [PlanController::class, 'currentState']);
+
+Route::get('/careers', [CareerController::class, 'index']);
+Route::get('/careers/{career}', [CareerController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -22,8 +27,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/me', [AuthController::class, 'update']);
 
     Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::post('/plan/commit', [PlanController::class, 'commit']);
 
-    Route::get('/careers', [CareerController::class, 'index']);
     Route::get('/professionals', [ProfessionalController::class, 'index']);
     Route::get('/questions', [QuestionController::class, 'index']);
 

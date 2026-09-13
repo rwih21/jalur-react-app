@@ -16,6 +16,8 @@ import {
   Label,
 } from "../components/ui";
 
+import login_image from "../assets/images/login_image.png";
+
 export default function RegisterPage() {
   const { register } = useAuth();
   const navigate = useNavigate();
@@ -51,25 +53,18 @@ export default function RegisterPage() {
 
   return (
     <div className="flex min-h-svh items-center justify-center bg-muted/40 px-4 py-8">
-      <div className="w-full max-w-md">
-        {/* <div className="mb-6 text-center">
-          <div className="mx-auto w-fit">
-            <img src={logo} alt="Logo" className="size-16" />
-          </div>
-          <h1 className="mt-4 text-2xl font-bold tracking-tight text-primary">
-            JALUR
-          </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Create your account
-          </p>
-        </div> */}
-
-        <Card>
+      <div className="flex w-full max-w-2xl overflow-hidden rounded-xl border bg-background shadow-lg">
+        <div className="hidden w-1/2 lg:block">
+          <img
+            src={login_image}
+            alt="Register"
+            className="h-full w-full object-cover"
+          />
+        </div>
+        <div className="flex w-full flex-col justify-center p-8 lg:w-1/2">
           <CardHeader>
             <CardTitle className="text-lg">Get started</CardTitle>
-            <CardDescription>
-              Tell us a bit about yourself.
-            </CardDescription>
+            <CardDescription>Tell us a bit about yourself.</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -157,7 +152,7 @@ export default function RegisterPage() {
               </Button>
             </p>
           </CardContent>
-        </Card>
+        </div>
       </div>
     </div>
   );

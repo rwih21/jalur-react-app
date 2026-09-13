@@ -16,6 +16,8 @@ import {
   Label,
 } from "../components/ui";
 
+import login_image from "../assets/images/login_image.png";
+
 export default function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -42,21 +44,19 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-svh items-center justify-center bg-muted/40 px-4 py-8">
-      <div className="w-full max-w-md">
-        {/* <div className="text-center">
-          <div className="mx-auto w-fit">
-            <img src={logo} alt="Logo" className="size-40" />
-          </div>
-          <p className="text-sm text-muted-foreground">
-            Sign in to your account
-          </p>
-        </div> */}
-
-        <Card>
+      <div className="flex w-full max-w-2xl overflow-hidden rounded-xl border bg-background shadow-lg">
+        <div className="hidden w-1/2 lg:block">
+          <img
+            src={login_image}
+            alt="Login"
+            className="h-full w-full object-cover"
+          />
+        </div>
+        <div className="flex w-full flex-col justify-center p-8 lg:w-1/2">
           <CardHeader>
             <CardTitle className="text-lg">Welcome back</CardTitle>
             <CardDescription>
-              Enter your credentials to continue.
+              <div className="mb-4">Enter your credentials to continue.</div>
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -104,7 +104,7 @@ export default function LoginPage() {
               </Button>
             </p>
           </CardContent>
-        </Card>
+        </div>
       </div>
     </div>
   );

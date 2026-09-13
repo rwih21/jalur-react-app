@@ -124,7 +124,7 @@ export default function LandingPage() {
               <Button
                 size="lg"
                 variant="brand"
-                onClick={() => navigate("/assessment")}
+                onClick={() => navigate("/start")}
                 className="w-full gap-2 sm:w-auto"
               >
                 Get Started
@@ -207,7 +207,7 @@ export default function LandingPage() {
               <Button
                 size="lg"
                 variant="brand"
-                onClick={() => navigate("/assessment")}
+                onClick={() => navigate("/start")}
                 className="gap-2"
               >
                 Start my assessment

@@ -249,9 +249,24 @@ export default function ResultsPage() {
                       <span className="text-sm font-medium text-muted-foreground">
                         {c.skills}
                       </span>
-                      <Badge variant="secondary" className="w-fit">
-                        {c.category}
-                      </Badge>
+                      <div className="flex items-center justify-between gap-2">
+                        <Badge variant="secondary" className="w-fit">
+                          {c.category}
+                        </Badge>
+                        {!c.locked && (
+                          <Button
+                            size="sm"
+                            variant="brand"
+                            onClick={() =>
+                              navigate(`/assessment/current-state?career=${c.id}`)
+                            }
+                            className="gap-1.5"
+                          >
+                            Lanjutkan dengan karier ini
+                            <ArrowRight className="size-3.5" />
+                          </Button>
+                        )}
+                      </div>
                     </CardContent>
                   </Card>
                   {c.locked && (

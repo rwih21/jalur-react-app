@@ -18,6 +18,7 @@ class CareerDNAMatchSeeder extends Seeder
                 'Investment Banking' => 94,
                 'Private Equity' => 92,
                 'Management Consulting' => 88,
+                'Data Analyst' => 82,
                 'Product Management' => 76,
             ],
             'people_leader' => [
@@ -33,7 +34,9 @@ class CareerDNAMatchSeeder extends Seeder
                 'Product Management' => 70,
             ],
             'technical_builder' => [
+                'Software Engineer' => 95,
                 'Product Management' => 93,
+                'Data Analyst' => 84,
                 'Management Consulting' => 72,
                 'Investment Banking' => 58,
                 'Private Equity' => 55,
@@ -47,6 +50,7 @@ class CareerDNAMatchSeeder extends Seeder
             'operational_executor' => [
                 'Product Management' => 88,
                 'Management Consulting' => 82,
+                'Data Analyst' => 76,
                 'Investment Banking' => 68,
                 'Private Equity' => 64,
             ],

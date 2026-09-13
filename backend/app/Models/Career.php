@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable(['name', 'category', 'match_percentage', 'salary_range', 'skills'])]
 class Career extends Model
@@ -21,9 +22,25 @@ class Career extends Model
         return $query;
     }
 
+    public function scopeSearchByName($query, ?string $search)
+    {
+        if ($search) {
+            $query->where('name', 'like', '%'.$search.'%');
+        }
+
+        return $query;
+    }
+
     public function careerDnas(): BelongsToMany
     {
         return $this->belongsToMany(CareerDNA::class, 'career_dna_career', 'career_id', 'career_dna_id')
             ->withPivot('match_percentage');
+    }
+
+    /** @return HasMany<CareerRequirement, $this> */
+    public function requirements(): HasMany
+    {
+        return $this->hasMany(CareerRequirement::class)
+            ->orderByRaw("case importance when 'high' then 0 else 1 end");
     }
 }
