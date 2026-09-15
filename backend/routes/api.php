@@ -27,6 +27,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/me', [AuthController::class, 'update']);
 
     Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/assessment/result', [AssessmentController::class, 'result']);
+    Route::get('/plan', [PlanController::class, 'show']);
     Route::post('/plan/commit', [PlanController::class, 'commit']);
 
     Route::get('/professionals', [ProfessionalController::class, 'index']);

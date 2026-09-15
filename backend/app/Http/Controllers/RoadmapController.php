@@ -2,41 +2,50 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Career;
+use App\Services\CareerPlanner;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class RoadmapController extends Controller
 {
+    public function __construct(private readonly CareerPlanner $planner) {}
+
     public function index(Request $request): JsonResponse
     {
-        $items = $request->user()->roadmapItems()
+        $user = $request->user();
+
+        $items = $user->roadmapItems()
             ->orderBy('sort_order')
             ->get();
 
-        if ($items->isEmpty()) {
-            $defaults = [
-                'Financial Modeling',
-                'Build a DCF',
-                'Trading Comps',
-                'Build your IB network',
-                'Apply to internships',
-                'Technical interviews',
-            ];
+        if ($items->isEmpty() && $user->career_id) {
+            $career = $user->career_id ? Career::find($user->career_id) : null;
 
-            foreach ($defaults as $i => $title) {
-                $request->user()->roadmapItems()->create([
-                    'title' => $title,
-                    'completed' => false,
-                    'sort_order' => $i,
-                ]);
+            if ($career && $user->career_levels) {
+                $plan = $this->planner->build($career, $user->career_levels);
+                $this->planner->persistRoadmap($user, $plan);
+
+                $items = $user->roadmapItems()
+                    ->orderBy('sort_order')
+                    ->get();
             }
-
-            $items = $request->user()->roadmapItems()
-                ->orderBy('sort_order')
-                ->get();
         }
 
-        return response()->json($items);
+        $career = $user->career_id ? Career::find($user->career_id) : null;
+        $readiness = null;
+        if ($career && $user->career_levels) {
+            $readiness = $this->planner->readiness($career, $user->career_levels);
+        }
+
+        return response()->json([
+            'career' => $career ? [
+                'id' => $career->id,
+                'name' => $career->name,
+            ] : null,
+            'readiness' => $readiness,
+            'items' => $items,
+        ]);
     }
 
     public function update(Request $request, int $id): JsonResponse

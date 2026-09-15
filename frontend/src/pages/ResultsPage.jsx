@@ -113,6 +113,7 @@ export default function ResultsPage() {
         .map(([key, value]) => ({ key, value }))
         .sort((a, b) => b.value - a.value)
     : [];
+  const drivers = result.drivers || [];
   const hasLocked = result.careers?.some((c) => c.locked);
 
   return (
@@ -213,6 +214,43 @@ export default function ResultsPage() {
           </Card>
         )}
 
+        {drivers.length > 0 && (
+          <Card className="mt-6">
+            <CardHeader>
+              <CardTitle className="text-xl font-bold tracking-tight">
+                Kenapa DNA ini cocok untukmu
+              </CardTitle>
+              <CardDescription>
+                Faktor yang paling berpengaruh dalam mencocokkan profilmu.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {drivers.map((driver, i) => (
+                <div key={driver.key} className="flex items-start gap-4">
+                  <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/15 text-sm font-bold text-primary-dark">
+                    {i + 1}
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="text-sm font-semibold">{driver.label}</span>
+                      <span className="text-sm font-medium text-muted-foreground">
+                        {driver.share}%
+                      </span>
+                    </div>
+                    <Progress
+                      value={driver.share}
+                      className="mt-1.5 bg-primary/10"
+                    />
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      {driver.note}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        )}
+
         <div className="mt-12">
           <h2 className="text-xl font-bold tracking-tight">
             Karier yang cocok untukmu
@@ -253,19 +291,30 @@ export default function ResultsPage() {
                         <Badge variant="secondary" className="w-fit">
                           {c.category}
                         </Badge>
-                        {!c.locked && (
-                          <Button
-                            size="sm"
-                            variant="brand"
-                            onClick={() =>
-                              navigate(`/assessment/current-state?career=${c.id}`)
-                            }
-                            className="gap-1.5"
-                          >
-                            Lanjutkan dengan karier ini
-                            <ArrowRight className="size-3.5" />
-                          </Button>
-                        )}
+                        {!c.locked &&
+                          (c.has_requirements ? (
+                            <Button
+                              size="sm"
+                              variant="brand"
+                              onClick={() =>
+                                navigate(`/assessment/current-state?career=${c.id}`)
+                              }
+                              className="gap-1.5"
+                            >
+                              Lanjutkan dengan karier ini
+                              <ArrowRight className="size-3.5" />
+                            </Button>
+                          ) : (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => navigate("/careers")}
+                              className="gap-1.5"
+                            >
+                              Lihat karier lain
+                              <ArrowRight className="size-3.5" />
+                            </Button>
+                          ))}
                       </div>
                     </CardContent>
                   </Card>

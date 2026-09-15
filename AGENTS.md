@@ -2,6 +2,14 @@
 
 Two independent apps live in this repo — there is no root-level build. Run app commands from inside `backend/` or `frontend/`, never from the root (root `package.json` only pulls the graphify tool).
 
+## Product
+
+Jalur ("path"/"track") is a career-preparation and career-guidance app. Flow: **Assessment → Career DNA / matches → Personalized Roadmap → Action Plan → Career Preparation**, with optional interview preparation and AI/copilot features. Currently alpha.
+
+- Settled product and scope decisions live in `JALUR_DECISION.md` — read it before making product calls.
+- UI/design token specification: `DESIGN.md`.
+- Brainstorming partner prompt: `.opencode/agents/jalur-brainstorm.md`.
+
 ## Layout
 
 - `backend/` — Laravel API (PHP 8.3, Laravel ^13, Sanctum, SQLite). Read `backend/AGENTS.md` (Laravel Boost guidelines) before touching backend code.

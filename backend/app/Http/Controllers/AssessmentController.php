@@ -7,7 +7,6 @@ use App\Models\CareerDNA;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class AssessmentController extends Controller
@@ -20,6 +19,26 @@ class AssessmentController extends Controller
         'technical',
         'creative',
         'execution',
+    ];
+
+    private const TRAIT_LABELS = [
+        'analytical' => 'Analytical Thinking',
+        'leadership' => 'Leadership',
+        'communication' => 'Communication',
+        'commercial' => 'Commercial Orientation',
+        'technical' => 'Technical',
+        'creative' => 'Creativity',
+        'execution' => 'Execution',
+    ];
+
+    private const TRAIT_NOTES = [
+        'analytical' => 'Kamu memecah masalah rumit menjadi bagian yang bisa diukur.',
+        'leadership' => 'Kamu membangun kepercayaan dan menyatukan orang.',
+        'communication' => 'Kamu menyampaikan gagasan dan membaca audiens dengan jelas.',
+        'commercial' => 'Kamu fokus pada value, revenue, dan dampak bisnis.',
+        'technical' => 'Kamu mengeksplorasi sistem dan tools sampai benar-benar paham.',
+        'creative' => 'Kamu melihat kemungkinan yang belum dipikirkan orang lain.',
+        'execution' => 'Kamu menutup loop dan memastikan rencana jadi kenyataan.',
     ];
 
     private const FREE_UNLOCKED_CAREERS = 3;
@@ -67,7 +86,7 @@ class AssessmentController extends Controller
             $question = $byId[$answer['question_id']];
             $option = $question->options[$answer['option_index']] ?? null;
 
-            if (!$option || !isset($option['trait'], $option['points'])) {
+            if (! $option || ! isset($option['trait'], $option['points'])) {
                 throw ValidationException::withMessages([
                     'answers' => ['One or more answers are invalid.'],
                 ]);
@@ -84,17 +103,46 @@ class AssessmentController extends Controller
         $careerDna = $this->findBestCareerDna($normalized);
 
         $user = Auth::guard('sanctum')->user();
-        $persisted = false;
+
         if ($user && $careerDna) {
             $user->forceFill([
                 'career_dna_id' => $careerDna->id,
                 'career_score' => $this->topMatchPercentage($careerDna),
+                'career_traits' => $normalized,
             ])->save();
-            $persisted = true;
         }
 
-        $careers = $careerDna
-            ? $careerDna->careers()
+        return $this->resultPayload($careerDna, $normalized, (bool) $user, ! $user);
+    }
+
+    /**
+     * Last persisted DNA snapshot for a signed-in user.
+     */
+    public function result(Request $request): JsonResponse
+    {
+        $user = $request->user();
+
+        if (! $user->career_dna_id) {
+            return $this->resultPayload(null, []);
+        }
+
+        $careerDna = CareerDNA::find($user->career_dna_id);
+
+        if (! $careerDna) {
+            return $this->resultPayload(null, []);
+        }
+
+        $traits = $user->career_traits ?? [];
+
+        return $this->resultPayload($careerDna, $traits, true);
+    }
+
+    private function resultPayload(?CareerDNA $careerDna, array $traits, bool $persisted = false, bool $lockedCareers = false): JsonResponse
+    {
+        $careers = [];
+
+        if ($careerDna) {
+            $careers = $careerDna->careers()
                 ->orderByPivot('match_percentage', 'desc')
                 ->get()
                 ->map(fn ($career, $index) => [
@@ -104,10 +152,11 @@ class AssessmentController extends Controller
                     'salary_range' => $career->salary_range,
                     'skills' => $career->skills,
                     'match_percentage' => (int) $career->pivot->match_percentage,
-                    'locked' => !$user && $index >= self::FREE_UNLOCKED_CAREERS,
+                    'locked' => $lockedCareers && $index >= self::FREE_UNLOCKED_CAREERS,
+                    'has_requirements' => $career->requirements()->exists(),
                 ])
-                ->values()
-            : [];
+                ->values();
+        }
 
         return response()->json([
             'career_dna' => $careerDna
@@ -118,11 +167,48 @@ class AssessmentController extends Controller
                     'description' => $careerDna->description,
                 ]
                 : null,
-            'traits' => $normalized,
+            'traits' => $traits,
+            'drivers' => $this->drivers($careerDna, $traits),
             'careers' => $careers,
             'career_score' => $careerDna ? $this->topMatchPercentage($careerDna) : 0,
             'persisted' => $persisted,
         ]);
+    }
+
+    /**
+     * Explain which traits drove the DNA match, ranked by contribution.
+     *
+     * @param  array<string, int>  $normalized
+     * @return array<int, array<string, mixed>>
+     */
+    private function drivers(?CareerDNA $careerDna, array $normalized): array
+    {
+        if (! $careerDna || empty($normalized)) {
+            return [];
+        }
+
+        $profile = $careerDna->trait_profile ?? [];
+        $rows = [];
+
+        foreach (self::TRAITS as $trait) {
+            $share = (int) ($normalized[$trait] ?? 0);
+            $weight = (int) ($profile[$trait] ?? 0);
+
+            if ($share <= 0 || $weight <= 0) {
+                continue;
+            }
+
+            $rows[] = [
+                'key' => $trait,
+                'label' => self::TRAIT_LABELS[$trait],
+                'share' => $share,
+                'note' => self::TRAIT_NOTES[$trait],
+            ];
+        }
+
+        usort($rows, fn (array $a, array $b) => $b['share'] <=> $a['share']);
+
+        return array_slice($rows, 0, 4);
     }
 
     private function findBestCareerDna(array $normalized): ?CareerDNA

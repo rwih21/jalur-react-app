@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Video, Users, ArrowRight, TrendingUp, Target } from "lucide-react";
+import {
+  Video,
+  Users,
+  ArrowRight,
+  TrendingUp,
+  Target,
+  Sparkles,
+  RefreshCw,
+} from "lucide-react";
 import api from "../services/api";
 import {
   Badge,
@@ -24,6 +32,7 @@ export default function DashboardPage() {
     });
   }, []);
   if (!data) return null;
+  const readiness = data.career_readiness;
   return (
     <>
       <header className="mb-7 flex flex-col justify-between gap-4 sm:flex-row">
@@ -42,25 +51,61 @@ export default function DashboardPage() {
             <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               Career Readiness
             </CardTitle>
-            <CardDescription className="text-4xl font-semibold">
-              <span className="bg-linear-to-r from-primary to-peach bg-clip-text text-transparent">
-                {data.career_readiness}
-              </span>
-              <span className="ml-1 text-base font-normal text-muted-foreground">
-                / 100
-              </span>
-            </CardDescription>
+            {readiness !== null && readiness !== undefined ? (
+              <CardDescription className="text-4xl font-semibold">
+                <span className="bg-linear-to-r from-primary to-peach bg-clip-text text-transparent">
+                  {readiness}
+                </span>
+                <span className="ml-1 text-base font-normal text-muted-foreground">
+                  / 100
+                </span>
+              </CardDescription>
+            ) : (
+              <CardDescription className="text-4xl font-semibold text-muted-foreground/50">
+                —
+              </CardDescription>
+            )}
           </CardHeader>
           <CardContent className="mt-auto flex flex-col gap-4">
-            <Progress value={data.career_readiness} />
-            <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
-              <TrendingUp className="size-4 text-primary" />
-              {data.career_readiness >= 70
-                ? "Great momentum — keep it up!"
-                : data.career_readiness >= 40
-                  ? "Solid progress — keep building."
-                  : "Let's get you moving forward."}
-            </p>
+            {readiness !== null && readiness !== undefined ? (
+              <>
+                <Progress value={readiness} />
+                <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                  <TrendingUp className="size-4 text-primary" />
+                  {readiness >= 70
+                    ? "Great momentum — keep it up!"
+                    : readiness >= 40
+                      ? "Solid progress — keep building."
+                      : "Let's get you moving forward."}
+                </p>
+              </>
+            ) : (
+              <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                Pilih karier target dan nilai posisimu untuk mulai mengukur
+                kesiapan kariermu.
+              </p>
+            )}
+            {data.top_career ? (
+              <Button
+                variant="outline"
+                onClick={() =>
+                  navigate(`/assessment/current-state?career=${data.top_career.id}`)
+                }
+                className="w-fit gap-2"
+              >
+                <RefreshCw className="size-4" />
+                Reassess my levels
+              </Button>
+            ) : (
+              <Button
+                variant="brand"
+                onClick={() => navigate("/assessment")}
+                className="w-fit gap-2"
+              >
+                Take the assessment
+                <ArrowRight className="size-4" />
+              </Button>
+            )}
           </CardContent>
         </Card>
 
@@ -102,7 +147,7 @@ export default function DashboardPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 <Target className="size-4" />
-                Top Career
+                Target Career
               </CardTitle>
               <CardDescription className="pt-1 text-xl font-semibold text-foreground">
                 {data.top_career.name}
@@ -113,31 +158,63 @@ export default function DashboardPage() {
               <p className="text-sm font-semibold text-primary-dark">
                 {data.top_career.match}% Career Fit
               </p>
+              <Button
+                variant="outline"
+                onClick={() => navigate("/app/roadmap")}
+                className="w-fit gap-2"
+              >
+                Open your roadmap
+                <ArrowRight className="size-4" />
+              </Button>
             </CardContent>
           </Card>
         )}
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              <Users className="size-4" />
-              Network
-            </CardTitle>
-            <CardDescription className="pt-1 text-xl font-semibold text-foreground">
-              {data.network_count} people in your network this week
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="mt-auto">
-            <Button
-              variant="outline"
-              onClick={() => navigate("/app/network")}
-              className="text-foreground"
-            >
-              View Network
-              <ArrowRight className="size-4" />
-            </Button>
-          </CardContent>
-        </Card>
+        {data.dna ? (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                <Sparkles className="size-4" />
+                Career DNA
+              </CardTitle>
+              <CardDescription className="pt-1 text-xl font-semibold text-foreground">
+                {data.dna.name}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="mt-auto">
+              <Button
+                variant="outline"
+                onClick={() => navigate("/app/dna")}
+                className="gap-2"
+              >
+                Why this DNA
+                <ArrowRight className="size-4" />
+              </Button>
+            </CardContent>
+          </Card>
+        ) : (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                <Users className="size-4" />
+                Network
+              </CardTitle>
+              <CardDescription className="pt-1 text-xl font-semibold text-foreground">
+                {data.network_count} people in your network this week
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="mt-auto">
+              <Button
+                variant="outline"
+                onClick={() => navigate("/app/network")}
+                className="text-foreground"
+              >
+                View Network
+                <ArrowRight className="size-4" />
+              </Button>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </>
   );

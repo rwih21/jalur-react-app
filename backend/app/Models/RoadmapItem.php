@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['user_id', 'title', 'completed', 'sort_order'])]
+#[Fillable(['user_id', 'title', 'completed', 'sort_order', 'requirement_key'])]
 class RoadmapItem extends Model
 {
     use HasFactory;

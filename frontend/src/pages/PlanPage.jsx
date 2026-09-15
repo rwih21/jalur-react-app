@@ -6,6 +6,7 @@ import {
   Compass,
   LayoutDashboard,
   Loader2,
+  RefreshCw,
   Sparkles,
   TrendingUp,
 } from "lucide-react";
@@ -68,6 +69,19 @@ export default function PlanPage() {
       .catch(() => {})
       .finally(() => setCommitting(false));
   }, [user, plan, committing]);
+
+  useEffect(() => {
+    if (plan || !user) return;
+    api
+      .get("/plan")
+      .then((d) => {
+        if (d.plan) {
+          localStorage.setItem(PLAN_KEY, JSON.stringify(d.plan));
+          setPlan(d.plan);
+        }
+      })
+      .catch(() => {});
+  }, [user]);
 
   if (!plan) {
     return (
@@ -318,6 +332,16 @@ export default function PlanPage() {
                 >
                   Buka Roadmap
                   <ArrowRight className="size-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() =>
+                    navigate(`/assessment/current-state?career=${plan.career.id}`)
+                  }
+                  className="gap-2"
+                >
+                  <RefreshCw className="size-4" />
+                  Reassess
                 </Button>
                 <Button variant="outline" onClick={() => navigate("/app")} className="gap-2">
                   <LayoutDashboard className="size-4" />

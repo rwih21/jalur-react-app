@@ -3,6 +3,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Loader2, Sparkles, TriangleAlert } from "lucide-react";
 import api from "../services/api";
 import { cn } from "@/lib/utils";
+import { useAuth } from "../context/AuthContext";
 import {
   Badge,
   Button,
@@ -36,6 +37,7 @@ function loadJson(key) {
 
 export default function CurrentStatePage() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [params] = useSearchParams();
   const careerId = params.get("career");
 
@@ -66,6 +68,21 @@ export default function CurrentStatePage() {
         setCareer(data.career);
         setRequirements(data.requirements);
         setLoading(false);
+
+        if (user) {
+          api
+            .get("/plan")
+            .then((d) => {
+              if (d.plan?.career?.id === Number(careerId)) {
+                const saved = {};
+                d.plan.requirements.forEach((r) => {
+                  saved[r.key] = r.current;
+                });
+                setState(saved);
+              }
+            })
+            .catch(() => {});
+        }
       })
       .catch(() => {
         setError("Profil karier gagal dimuat. Pastikan koneksi dan server aktif.");
